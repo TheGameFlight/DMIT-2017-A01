@@ -12,14 +12,13 @@ public class VehicleController : MonoBehaviour
     public float accelerationValue;
     public float brakeValue;
     public float steerValue;
-    public float decelerationValue = -4.0f;
 
     public float currentSpeed;
     public float maxSpeed;
 
-    const float ACCELERATION_FACTOR = 10.0f;
+    const float ACCELERATION_FACTOR = 30.0f;
     const float BRAKE_FACTOR = -5.0f;
-    const float STEER_FACTOR = 10.0f;
+    const float STEER_FACTOR = 30.0f;
 
     private Rigidbody rb;
 
@@ -27,6 +26,7 @@ public class VehicleController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
 
         accelerate.Enable();
         brake.Enable();
@@ -57,21 +57,31 @@ public class VehicleController : MonoBehaviour
         steerValue = c.ReadValue<float>() * STEER_FACTOR;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        float currentSpeed = rb.linearVelocity.magnitude;
 
-        currentSpeed -= decelerationValue * Time.deltaTime;
-        currentSpeed += accelerationValue * Time.deltaTime;
-        currentSpeed -= brakeValue * Time.deltaTime;
-        currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxSpeed);
-        if(Mathf.Abs(currentSpeed) > 0.01f)
+        if (accelerationValue > 0f)
         {
-            float steer = steerValue * Mathf.Sign(currentSpeed);
-            transform.Rotate(0f, steer * Time.deltaTime, 0f);
+            rb.AddForce(transform.forward * accelerationValue, ForceMode.Acceleration);
         }
 
-        Vector3 tmp = transform.forward * (currentSpeed);
-        rb.linearVelocity = tmp;
+        if (brakeValue < 0f)
+        {
+            rb.AddForce(transform.forward * brakeValue, ForceMode.Acceleration);
+        }
+
+        
+        if (currentSpeed > 0.1f)
+        {
+            float steerAmount = steerValue * Mathf.Sign(Vector3.Dot(rb.linearVelocity, transform.forward));
+            transform.Rotate(0f, steerAmount * Time.fixedDeltaTime, 0f);
+        }
+
+        if (currentSpeed > maxSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+        }
     }
 
     public void SpeedBoost(float boost_)
