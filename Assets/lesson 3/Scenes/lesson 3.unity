@@ -527,6 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveSystem
   filePath: Assets/Resources/saveData.csv
+  saveDataList: []
 --- !u!4 &1375394864
 Transform:
   m_ObjectHideFlags: 0
@@ -708,6 +709,7 @@ GameObject:
   - component: {fileID: 1619721732}
   - component: {fileID: 1619721731}
   - component: {fileID: 1619721736}
+  - component: {fileID: 1619721737}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Player
@@ -919,6 +921,20 @@ MonoBehaviour:
   steerValue: 0
   currentSpeed: 0
   maxSpeed: 50
+--- !u!114 &1619721737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619721730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414f38c2fd0ea244a979cb965b49f324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostDataRecorder
+  ghostData:
+    ghostDataFrames: []
 --- !u!1 &1683079178
 GameObject:
   m_ObjectHideFlags: 0
