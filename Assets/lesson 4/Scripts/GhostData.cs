@@ -8,7 +8,9 @@ using UnityEngine;
 public class GhostData
 {
     public List<GhostDataFrame> ghostDataFrames = new List<GhostDataFrame>();
-
+    // index
+    // position - posX, posY, posZ
+    // rotation  - rotX, rotY, rotZ
     public void AddFrame(Vector3 position_, Vector3 rotation_)
     {
         ghostDataFrames.Add(new GhostDataFrame(position_, rotation_));

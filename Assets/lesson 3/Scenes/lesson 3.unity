@@ -440,6 +440,64 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &940017860
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 940017862}
+  - component: {fileID: 940017861}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &940017861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 940017860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8cd60a1a93126b439234f25c3494352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjectTesting
+  goku: {fileID: 11400000, guid: 32501e1ebba502c4b9bb7d6f1f595e57, type: 2}
+  gokuData:
+    characterName: 
+    portrait: {fileID: 0}
+    stats:
+      maxHP: 0
+      currentHP: 0
+      maxSP: 0
+      currentSP: 0
+      atk: 0
+      def: 0
+      matk: 0
+      mdef: 0
+      spe: 0
+--- !u!4 &940017862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 940017860}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.14024, y: 0.43854, z: 25.92607}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1037315922
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -725,7 +783,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619721730}
   serializedVersion: 5
-  m_Mass: 1000
+  m_Mass: 100000
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -743,7 +801,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1619721732
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -751,7 +809,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619721730}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b634f1fa8fc891441ab863ba7d60e009, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -920,7 +978,7 @@ MonoBehaviour:
   brakeValue: 0
   steerValue: 0
   currentSpeed: 0
-  maxSpeed: 50
+  maxSpeed: 20
 --- !u!114 &1619721737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1058,3 +1116,4 @@ SceneRoots:
   - {fileID: 208911235}
   - {fileID: 1472551578}
   - {fileID: 1375394864}
+  - {fileID: 940017862}

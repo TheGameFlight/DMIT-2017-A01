@@ -10,6 +10,7 @@ public class SaveSystem : MonoBehaviour
 
     public string filePath;
     public List<SaveData> saveDataList = new List<SaveData>();
+    
     private void Start()
     {
         //CreateSave("sujan", 1000);
