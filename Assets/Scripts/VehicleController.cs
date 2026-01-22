@@ -18,7 +18,7 @@ public class VehicleController : MonoBehaviour
     public float maxSpeed;
 
     const float ACCELERATION_FACTOR = 30.0f;
-    const float BRAKE_FACTOR = -5.0f;
+    const float BRAKE_FACTOR = -30.0f;
     const float STEER_FACTOR = 30.0f;
 
     private Rigidbody rb;
@@ -61,9 +61,9 @@ public class VehicleController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float currentSpeed = rb.linearVelocity.magnitude;
+        currentSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
 
-        if (accelerationValue > 0f)
+        if (Mathf.Abs(accelerationValue) > 0.01f)
         {
             rb.AddForce(transform.forward * accelerationValue, ForceMode.Acceleration);
         }
@@ -73,14 +73,15 @@ public class VehicleController : MonoBehaviour
             rb.AddForce(transform.forward * brakeValue, ForceMode.Acceleration);
         }
 
-        
-        if (currentSpeed > 0.1f)
+        if (Mathf.Abs(currentSpeed) > 0.1f)
         {
-            float steerAmount = steerValue * Mathf.Sign(Vector3.Dot(rb.linearVelocity, transform.forward));
+            float steerAmount =
+                steerValue * Mathf.Sign(currentSpeed);
+
             transform.Rotate(0f, steerAmount * Time.fixedDeltaTime, 0f);
         }
 
-        if (currentSpeed > maxSpeed)
+        if (rb.linearVelocity.magnitude > maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
