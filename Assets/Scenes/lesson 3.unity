@@ -923,6 +923,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Accelerate
       m_Flags: 0
+    - m_Name: 
+      m_Id: 019b48c8-2ede-4ca6-a8a7-b221093ce5d9
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Accelerate
+      m_Flags: 0
     m_Flags: 0
   brake:
     m_Name: Brake
@@ -935,6 +943,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 8c5dad02-86a3-4bd8-9154-3365f93d314d
       m_Path: <XInputController>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Brake
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 80be6be9-3ea3-47c1-a20b-dac6370d9a89
+      m_Path: <Keyboard>/space
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -968,6 +984,30 @@ MonoBehaviour:
     - m_Name: positive
       m_Id: 123cceb1-2e6a-4b89-8a60-665db456e11e
       m_Path: <Gamepad>/leftStick/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Steer
+      m_Flags: 8
+    - m_Name: 1D Axis
+      m_Id: 237610dc-1595-4ce1-a2e8-c58894c7eca3
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Steer
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: dbebb58d-f5fc-4fd5-9535-16f4732e719c
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Steer
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: 6e606f4a-9d13-4a7b-8ba3-029c07afd05b
+      m_Path: <Keyboard>/d
       m_Interactions: 
       m_Processors: 
       m_Groups: 
