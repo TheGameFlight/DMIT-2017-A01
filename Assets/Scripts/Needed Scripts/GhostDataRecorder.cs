@@ -1,24 +1,32 @@
+using System.Threading;
 using UnityEngine;
 
 public class GhostDataRecorder : MonoBehaviour
 {
     public GhostData ghostData = new GhostData();
     private bool recording;
+    private float timer;
 
-
-    private void Start()
-    {
-        StartRecording();
-    }
     public void StartRecording()
     {
+        ghostData.ghostDataFrames.Clear();
+        timer = 0f;
         recording = true;
+    }
+
+    public void StopRecording()
+    {
+        recording = false;
     }
 
     public void FixedUpdate()
     {
-        if (!recording) return;
+        if (!recording)
+        {
+            return;
+        }
 
-        ghostData.AddFrame(transform.position, transform.eulerAngles);
+        timer += Time.fixedDeltaTime;
+        ghostData.AddFrame(transform.position, transform.eulerAngles, timer);
     }
 }
