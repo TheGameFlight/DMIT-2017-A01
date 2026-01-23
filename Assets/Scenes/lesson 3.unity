@@ -1037,6 +1037,7 @@ MonoBehaviour:
   - {fileID: 1399649475}
   ghostRecorder: {fileID: 1828763181030661861}
   ghostPrefab: {fileID: 342188513793203759, guid: c3cff6caa24740644aa78c050d346938, type: 3}
+  ghostSpawnPoint: {fileID: 1070552347}
 --- !u!4 &528364715
 Transform:
   m_ObjectHideFlags: 0
