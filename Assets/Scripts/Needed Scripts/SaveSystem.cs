@@ -9,7 +9,7 @@ public class SaveSystem : MonoBehaviour
 
     public string filePath;
     public List<SaveData> saveDataList = new List<SaveData>();
-    
+
     private void Start()
     {
         //CreateSave("Joshua", 1000);

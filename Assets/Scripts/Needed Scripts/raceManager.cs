@@ -8,6 +8,11 @@ public class raceManager : MonoBehaviour
 
     public List<CheckpointsTrigger> checkpoints = new List<CheckpointsTrigger>();
 
+    public GhostDataRecorder ghostRecorder;
+
+    public GhostPlayer ghostPrefab;
+    private GhostPlayer ghostInstance;
+
     private bool raceStarted = false;
     private bool raceFinished = false;
     private int nextCheckpointIndex = 0;
@@ -25,6 +30,18 @@ public class raceManager : MonoBehaviour
         {
             raceTimer += Time.deltaTime;
         }
+    }
+    
+    public void StartRaceWithGhost(GhostData previousGhost)
+    {
+        if (previousGhost == null || previousGhost.ghostDataFrames.Count == 0)
+            return;
+
+        if (ghostInstance == null)
+            ghostInstance = Instantiate(ghostPrefab);
+
+        ghostInstance.ghostData = previousGhost;
+        ghostInstance.gameObject.SetActive(true);
     }
 
     public void StartFinishPassed()

@@ -150,8 +150,8 @@ GameObject:
   - component: {fileID: 7478600491330067741}
   - component: {fileID: 8444254451058057532}
   - component: {fileID: 2966631164394931678}
-  - component: {fileID: 593740292947868124}
   - component: {fileID: 7213347955787198231}
+  - component: {fileID: 593740292947868124}
   m_Layer: 0
   m_Name: Car 1
   m_TagString: Player
@@ -279,20 +279,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &593740292947868124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5089201705999830427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 414f38c2fd0ea244a979cb965b49f324, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostDataRecorder
-  ghostData:
-    ghostDataFrames: []
 --- !u!114 &7213347955787198231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,3 +403,18 @@ MonoBehaviour:
   steerValue: 0
   currentSpeed: 0
   maxSpeed: 20
+--- !u!114 &593740292947868124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5089201705999830427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414f38c2fd0ea244a979cb965b49f324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostDataRecorder
+  ghostData:
+    ghostDataFrames: []
+    ghostRecorder: {fileID: 0}

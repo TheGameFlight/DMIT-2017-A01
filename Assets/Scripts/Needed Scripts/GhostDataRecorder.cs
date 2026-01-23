@@ -12,11 +12,13 @@ public class GhostDataRecorder : MonoBehaviour
         ghostData.ghostDataFrames.Clear();
         timer = 0f;
         recording = true;
+        Debug.Log("StartRecording");
     }
 
     public void StopRecording()
     {
         recording = false;
+        Debug.Log("StopRecording");
     }
 
     public void FixedUpdate()

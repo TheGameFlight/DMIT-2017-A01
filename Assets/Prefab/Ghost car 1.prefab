@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3638452572632354318}
   - component: {fileID: 7494695506661340729}
   - component: {fileID: 1150188628473945720}
+  - component: {fileID: 342188513793203759}
   m_Layer: 0
   m_Name: Ghost car 1
   m_TagString: Player
@@ -89,3 +90,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &342188513793203759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816918104813366654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7110e6e5ddefc449b663504137198e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
