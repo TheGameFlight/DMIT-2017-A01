@@ -15,7 +15,7 @@ public class GhostPlayer : MonoBehaviour
 
         if (ghostData == null || ghostData.ghostDataFrames.Count == 0)
         {
-            enabled = false;
+            enabled = true;
         }
     }
 
@@ -41,5 +41,3 @@ public class GhostPlayer : MonoBehaviour
 
     }
 }
-
-

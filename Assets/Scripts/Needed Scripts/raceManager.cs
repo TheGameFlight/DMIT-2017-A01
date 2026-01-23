@@ -19,6 +19,11 @@ public class raceManager : MonoBehaviour
 
     private float raceTimer = 0f;
 
+    //delete after testing
+    [Header("Ghost Testing")]
+    public Transform ghostSpawnPoint;
+    //delete after testing
+
     private void Awake()
     {
         Instance = this;
@@ -31,7 +36,7 @@ public class raceManager : MonoBehaviour
             raceTimer += Time.deltaTime;
         }
     }
-    
+
     public void StartRaceWithGhost(GhostData previousGhost)
     {
         if (previousGhost == null || previousGhost.ghostDataFrames.Count == 0)
@@ -54,6 +59,8 @@ public class raceManager : MonoBehaviour
 
             Debug.Log("Race Started");
             Debug.Log($"Checkpoint progress: 0 / {checkpoints.Count}");
+
+            ghostRecorder.StartRecording();
             return;
         }
 
@@ -87,6 +94,48 @@ public class raceManager : MonoBehaviour
 
     private bool AllCheckpointsPassed()
     {
+
+        //delete after testing
+        raceFinished = true;
+        Debug.Log("RACE FINISHED");
+        Debug.Log($"Final Time: {raceTimer:F2} seconds");
+
+        ghostRecorder.StopRecording();
+
+        SpawnTestGhost();
+        //delete after testing
+
         return nextCheckpointIndex >= checkpoints.Count;
+
     }
+
+    //delete after testing
+    private void SpawnTestGhost()
+    {
+        Debug.Log("SpawnTestGhost() called");
+        if (ghostRecorder == null ||
+            ghostRecorder.ghostData == null ||
+            ghostRecorder.ghostData.ghostDataFrames.Count == 0)
+        {
+            Debug.Log("No ghost data to play");
+            return;
+        }
+
+        if (ghostInstance != null)
+        {
+            Destroy(ghostInstance.gameObject);
+        }
+
+        ghostInstance = Instantiate(
+            ghostPrefab,
+            ghostSpawnPoint.position,
+            ghostSpawnPoint.rotation
+        );
+
+        ghostInstance.ghostData = ghostRecorder.ghostData;
+        ghostInstance.gameObject.SetActive(true);
+
+        Debug.Log("Ghost spawned for testing");
+    }
+    //delete after testing
 }
