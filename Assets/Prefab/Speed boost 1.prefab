@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9158944502745904049
+--- !u!1 &7589179791334126996
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2482617493762889507}
-  - component: {fileID: 2526365607998486985}
-  - component: {fileID: 2291921696717375286}
-  - component: {fileID: 85381798198262422}
-  - component: {fileID: 7823934922768382408}
+  - component: {fileID: 2781238478260448416}
+  - component: {fileID: 8394955661869445923}
+  - component: {fileID: 6022818413079283217}
+  - component: {fileID: 5245255011512842613}
+  - component: {fileID: 875959516737905232}
   m_Layer: 0
-  m_Name: Speed boost
+  m_Name: Speed boost 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2482617493762889507
+--- !u!4 &2781238478260448416
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9158944502745904049}
+  m_GameObject: {fileID: 7589179791334126996}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.34, y: 0.97, z: -38.21}
+  m_LocalPosition: {x: -12.295318, y: 0.9742951, z: -22.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2526365607998486985
+--- !u!33 &8394955661869445923
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9158944502745904049}
+  m_GameObject: {fileID: 7589179791334126996}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &2291921696717375286
+--- !u!23 &6022818413079283217
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9158944502745904049}
+  m_GameObject: {fileID: 7589179791334126996}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -91,13 +91,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &85381798198262422
+--- !u!135 &5245255011512842613
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9158944502745904049}
+  m_GameObject: {fileID: 7589179791334126996}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -112,13 +112,13 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7823934922768382408
+--- !u!114 &875959516737905232
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9158944502745904049}
+  m_GameObject: {fileID: 7589179791334126996}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 784dfc5c9c57da34cb74121f607ccf05, type: 3}
@@ -128,7 +128,7 @@ MonoBehaviour:
   OnCollision:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9158944502745904049}
+      - m_Target: {fileID: 7589179791334126996}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -140,7 +140,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 3176046040481691014, guid: bffedc93e3d3dc84abf583571395caf1, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VehicleController, Assembly-CSharp
         m_MethodName: SpeedBoost
         m_Mode: 4
@@ -148,7 +148,7 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 50
+          m_FloatArgument: 10
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
