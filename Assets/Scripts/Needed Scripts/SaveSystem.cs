@@ -10,11 +10,6 @@ public class SaveSystem : MonoBehaviour
     public string filePath;
     public List<SaveData> saveDataList = new List<SaveData>();
 
-    //private void Start()
-    //{
-    //    //CreateSave("Joshua", 1000);
-    //    Debug.Log(LoadData("Joshua"));
-    //}
     public void CreateSave(string profileName_, int highScore_, GhostData ghostData_)
     {
         SaveData saveData = new SaveData(profileName_, highScore_, ghostData_);
@@ -65,41 +60,6 @@ public class SaveSystem : MonoBehaviour
         Debug.Log("Profile deleted: " + profileName);
     }
 
-    //public SaveData LoadData(string profileName)
-    //{
-    //    if (!File.Exists(filePath))
-    //    {
-    //        Debug.Log("No save file exists.");
-    //        return null;
-    //    }
-
-    //    string[] lines = File.ReadAllLines(filePath);
-    //    for (int i = 1; i < lines.Length; i++)
-    //    {
-    //        string[] columns = Regex.Split(lines[i], ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
-    //        if (columns.Length < 2)
-    //        {
-    //            continue;
-    //        }
-
-    //            if (columns[0] == profileName)
-    //        {
-    //            int highScore = int.Parse(columns[1]);
-
-    //            GhostData ghostData = null;
-
-    //            if (columns.Length > 2 && !string.IsNullOrEmpty(columns[2]))
-    //            {
-    //                ghostData = JsonUtility.FromJson<GhostData>(columns[2]);
-    //            }
-
-    //            return new SaveData(profileName, highScore, ghostData);
-    //        }
-    //    }
-
-    //    return null;
-    //}
 
     public SaveData LoadProfile(string profileName)
     {
@@ -181,3 +141,4 @@ public class SaveData
         ghostData = ghostData_;
     }
 }
+//You are doing a great job you can do this!

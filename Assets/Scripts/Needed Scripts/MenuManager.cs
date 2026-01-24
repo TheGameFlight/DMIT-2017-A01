@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -68,6 +69,7 @@ public class MenuManager : MonoBehaviour
 
         raceManager.SetActiveProfile(profileName);
         profileSelectPanel.SetActive(false);
+        SceneManager.LoadScene("Game");
     }
 
     public void RequestDeleteProfile(string profileName)
