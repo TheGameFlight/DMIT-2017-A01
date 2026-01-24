@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Analytics.IAnalytic;
 
 public class MenuManager : MonoBehaviour
 {
@@ -44,6 +45,24 @@ public class MenuManager : MonoBehaviour
     public void PickProfile(string profileName)
     {
         ActiveProfile.profileName = profileName;
+
+        SaveData data = saveSystem.LoadProfile(profileName);
+
+        if (data == null)
+        {
+            Debug.Log($"[PROFILE PICKED] {profileName} — NO SAVE DATA");
+        }
+        else if (data.ghostData == null || data.ghostData.ghostDataFrames.Count == 0)
+        {
+            Debug.Log($"[PROFILE PICKED] {profileName} — Best Time: {data.highScore} (NO GHOST)");
+        }
+        else
+        {
+            Debug.Log($"[PROFILE PICKED] {profileName} — Best Time: {data.highScore} (GHOST FOUND, Frames: {data.ghostData.ghostDataFrames.Count})");
+        }
+
+        profileSelectPanel.SetActive(false);
+
         SceneManager.LoadScene("Game");
     }
 
