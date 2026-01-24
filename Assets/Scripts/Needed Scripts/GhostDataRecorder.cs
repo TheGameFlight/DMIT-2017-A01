@@ -31,4 +31,9 @@ public class GhostDataRecorder : MonoBehaviour
         timer += Time.fixedDeltaTime;
         ghostData.AddFrame(transform.position, transform.eulerAngles, timer);
     }
+
+    public GhostData GetGhostData()
+    {
+        return ghostData;
+    }
 }

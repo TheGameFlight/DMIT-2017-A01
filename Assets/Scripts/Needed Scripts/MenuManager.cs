@@ -8,10 +8,8 @@ public class MenuManager : MonoBehaviour
     public GameObject confirmDeletePanel;
 
     public SaveSystem saveSystem;
-    public raceManager raceManager;
 
     private string pendingDeleteProfile;
-    private string activeProfile;
 
     private void Start()
     {
@@ -33,19 +31,6 @@ public class MenuManager : MonoBehaviour
         confirmDeletePanel.SetActive(false);
     }
 
-    public void ShowDeleteConfirm(string profileName)
-    {
-        pendingDeleteProfile = profileName;
-        confirmDeletePanel.SetActive(true);
-    }
-
-    public void CancelDelete()
-    {
-        pendingDeleteProfile = null;
-        confirmDeletePanel.SetActive(false);
-    }
-
-
     public void StartButton()
     {
         ShowProfileSelect();
@@ -58,23 +43,14 @@ public class MenuManager : MonoBehaviour
 
     public void PickProfile(string profileName)
     {
-        activeProfile = profileName;
-
-        SaveData data = saveSystem.LoadProfile(profileName);
-
-        if (data != null && data.ghostData != null)
-        {
-            raceManager.StartRaceWithGhost(data.ghostData);
-        }
-
-        raceManager.SetActiveProfile(profileName);
-        profileSelectPanel.SetActive(false);
+        ActiveProfile.profileName = profileName;
         SceneManager.LoadScene("Game");
     }
 
     public void RequestDeleteProfile(string profileName)
     {
-        ShowDeleteConfirm(profileName);
+        pendingDeleteProfile = profileName;
+        confirmDeletePanel.SetActive(true);
     }
 
     public void ConfirmDelete()
@@ -84,6 +60,7 @@ public class MenuManager : MonoBehaviour
             saveSystem.DeleteProfile(pendingDeleteProfile);
         }
 
-        CancelDelete();
+        pendingDeleteProfile = null;
+        confirmDeletePanel.SetActive(false);
     }
 }

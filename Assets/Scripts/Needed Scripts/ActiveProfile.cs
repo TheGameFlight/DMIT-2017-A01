@@ -1,16 +1,5 @@
-using UnityEngine;
-
-public class ActiveProfile : MonoBehaviour
+public class ActiveProfile
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //Hello! :3
+    public static string profileName;
 }

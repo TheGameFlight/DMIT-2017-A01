@@ -41,13 +41,15 @@ public class SaveSystem : MonoBehaviour
     public void DeleteProfile(string profileName)
     {
         if (!File.Exists(filePath))
+        {
             return;
+        }
 
         List<string> lines = new List<string>(File.ReadAllLines(filePath));
 
         for (int i = lines.Count - 1; i >= 1; i--)
         {
-            string[] columns = Regex.Split(lines[i],",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            string[] columns = Regex.Split(lines[i], ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
             if (columns[0] == profileName)
             {
@@ -98,17 +100,16 @@ public class SaveSystem : MonoBehaviour
     public void SaveGhost(string profileName, GhostData ghostData, int newHighScore)
     {
         if (!File.Exists(filePath))
+        {
             return;
+        }
 
         string[] lines = File.ReadAllLines(filePath);
         bool updated = false;
 
         for (int i = 1; i < lines.Length; i++)
         {
-            string[] columns = Regex.Split(
-                lines[i],
-                ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"
-            );
+            string[] columns = Regex.Split(lines[i], ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
             if (columns[0] == profileName)
             {
