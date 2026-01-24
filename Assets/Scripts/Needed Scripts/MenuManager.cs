@@ -14,6 +14,16 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 1; i <= 5; i++)
+        {
+            string slotName = $"Profile {i}";
+            SaveData data = saveSystem.LoadProfile(slotName);
+            if (data == null)
+            {
+                saveSystem.CreateSave(slotName, 0, null);
+            }
+        }
+
         ShowMainMenu();
     }
 

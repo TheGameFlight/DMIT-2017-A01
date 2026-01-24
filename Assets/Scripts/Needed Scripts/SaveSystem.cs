@@ -10,6 +10,11 @@ public class SaveSystem : MonoBehaviour
     public string filePath;
     public List<SaveData> saveDataList = new List<SaveData>();
 
+    //private void Awake()
+    //{
+    //    DontDestroyOnLoad(gameObject);
+    //}
+
     public void CreateSave(string profileName_, int highScore_, GhostData ghostData_)
     {
         SaveData saveData = new SaveData(profileName_, highScore_, ghostData_);
@@ -66,16 +71,17 @@ public class SaveSystem : MonoBehaviour
     public SaveData LoadProfile(string profileName)
     {
         if (!File.Exists(filePath))
+        {
+            Debug.LogWarning($"[LoadProfile] Save file does NOT exist at path: {filePath}");
             return null;
+        }
 
         string[] lines = File.ReadAllLines(filePath);
+        Debug.Log($"[LoadProfile] Total lines in file: {lines.Length}");
 
         for (int i = 1; i < lines.Length; i++)
         {
-            string[] columns = Regex.Split(
-                lines[i],
-                ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"
-            );
+            string[] columns = Regex.Split(lines[i],",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
             if (columns[0] == profileName)
             {
@@ -87,13 +93,15 @@ public class SaveSystem : MonoBehaviour
                     ghostData = JsonUtility.FromJson<GhostData>(columns[2]);
                 }
 
+                Debug.Log($"[LoadProfile] Loaded profile: {profileName}, HighScore: {highScore}, Frames: {(ghostData != null ? ghostData.ghostDataFrames.Count : 0)}");
+
                 return new SaveData(profileName, highScore)
                 {
                     ghostData = ghostData
                 };
             }
         }
-
+        Debug.LogWarning($"[LoadProfile] Profile {profileName} not found in file");
         return null;
     }
 
@@ -101,6 +109,7 @@ public class SaveSystem : MonoBehaviour
     {
         if (!File.Exists(filePath))
         {
+            Debug.LogWarning($"Save file does NOT exist at path: {filePath}");
             return;
         }
 
@@ -116,6 +125,9 @@ public class SaveSystem : MonoBehaviour
                 string ghostJson = JsonUtility.ToJson(ghostData);
                 lines[i] = $"{profileName}, {newHighScore}, {ghostJson}";
                 updated = true;
+
+                Debug.Log($"[SaveGhost] Writing to file: {filePath}");
+                Debug.Log($"[SaveGhost] Profile: {profileName}, Time: {newHighScore}, Frames: {ghostData.ghostDataFrames.Count}");
                 break;
             }
         }
@@ -123,8 +135,13 @@ public class SaveSystem : MonoBehaviour
         if (updated)
         {
             File.WriteAllLines(filePath, lines);
-            Debug.Log("Ghost data saved");
+            Debug.Log($"[SaveGhost] Data successfully saved for profile {profileName}");
         }
+        else
+        {
+            Debug.LogWarning($"[SaveGhost] Profile {profileName} not found in file, cannot save ghost");
+        }
+        Debug.Log("you are in SaveGhost");
     }
 }
 
