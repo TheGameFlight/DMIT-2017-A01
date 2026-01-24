@@ -4045,6 +4045,9 @@ GameObject:
   - component: {fileID: 1569440845}
   - component: {fileID: 1569440844}
   - component: {fileID: 1569440843}
+  - component: {fileID: 1569440848}
+  - component: {fileID: 1569440847}
+  - component: {fileID: 1569440846}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -4113,6 +4116,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1569440846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569440842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ae515161c67ee4a9e195556e1a6743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::raceManager
+  checkpoints: []
+  ghostRecorder: {fileID: 0}
+  ghostPrefab: {fileID: 0}
+  saveSystem: {fileID: 1569440847}
+  activeProfileName: 
+  ghostSpawnPoint: {fileID: 0}
+--- !u!114 &1569440847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569440842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 059afd36639d99d4dbb1354da275ffa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveSystem
+  filePath: 
+  saveDataList: []
+--- !u!114 &1569440848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569440842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfd278f8c9a696641a7beeea082f47da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuManager
+  mainMenuPanel: {fileID: 1556063319}
+  profileSelectPanel: {fileID: 1135042998}
+  confirmDeletePanel: {fileID: 1698660689}
+  saveSystem: {fileID: 1569440847}
+  raceManager: {fileID: 1569440846}
 --- !u!1 &1601455996
 GameObject:
   m_ObjectHideFlags: 0
@@ -4403,7 +4455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1698660690
 RectTransform:
   m_ObjectHideFlags: 0
