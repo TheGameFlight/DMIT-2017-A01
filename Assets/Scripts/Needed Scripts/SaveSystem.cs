@@ -15,19 +15,20 @@ public class SaveSystem : MonoBehaviour
         //CreateSave("Joshua", 1000);
         Debug.Log(LoadData("Joshua"));
     }
-    public void CreateSave(string profileName_, int highScore_)
+    public void CreateSave(string profileName_, int highScore_, GhostData ghostData_)
     {
-        SaveData saveData = new SaveData(profileName_, highScore_);
+        SaveData saveData = new SaveData(profileName_, highScore_, ghostData_);
         bool fileExists = File.Exists(filePath);
 
         using (StreamWriter writer = new StreamWriter(filePath, true))
         {
             if (!fileExists)
             {
-                writer.WriteLine("Profile Name, Score");
+                writer.WriteLine("Profile Name, Score, GhostDataJson");
             }
 
-            writer.WriteLine($"{saveData.profileName}, {saveData.highScore}");
+            string ghostJson = JsonUtility.ToJson(ghostData_);
+            writer.WriteLine($"{saveData.profileName}, {saveData.highScore}, {ghostJson}");
             saveDataList.Add(saveData);
         }
     }
@@ -42,23 +43,120 @@ public class SaveSystem : MonoBehaviour
 
     }
 
-    public int LoadData(string profileName)
+    public void DeleteProfile(string profileName)
     {
-        int highScore = 0;
+        if (!File.Exists(filePath))
+            return;
+
+        List<string> lines = new List<string>(File.ReadAllLines(filePath));
+
+        for (int i = lines.Count - 1; i >= 1; i--)
+        {
+            string[] columns = Regex.Split(lines[i],",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+            if (columns[0] == profileName)
+            {
+                lines.RemoveAt(i);
+                break;
+            }
+        }
+
+        File.WriteAllLines(filePath, lines);
+        Debug.Log("Profile deleted: " + profileName);
+    }
+
+    public SaveData LoadData(string profileName)
+    {
+        if (!File.Exists(filePath))
+        {
+            Debug.Log("No save file exists.");
+            return null;
+        }
+
+        //int highScore = 0;
         string[] lines = File.ReadAllLines(filePath);
-        for (int i = 0; i < lines.Length; i++)
+        for (int i = 1; i < lines.Length; i++)
         {
             string[] columns = Regex.Split(lines[i], ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
             if (columns[0] == profileName)
             {
-                highScore = int.Parse(columns[1]);
+                int highScore = int.Parse(columns[1]);
+                GhostData ghostData = JsonUtility.FromJson<GhostData>(columns[2]);
+
+                SaveData saveData = new SaveData(profileName, highScore, ghostData);
+                return saveData;
+            }
+        }
+        //SaveData saveData = new SaveData(profileName, highScore);
+        //saveDataList.Add(saveData);
+        //return highScore;
+        return null;
+    }
+
+    public SaveData LoadProfile(string profileName)
+    {
+        if (!File.Exists(filePath))
+            return null;
+
+        string[] lines = File.ReadAllLines(filePath);
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string[] columns = Regex.Split(
+                lines[i],
+                ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"
+            );
+
+            if (columns[0] == profileName)
+            {
+                int highScore = int.Parse(columns[1]);
+
+                GhostData ghostData = null;
+                if (columns.Length > 2 && !string.IsNullOrEmpty(columns[2]))
+                {
+                    ghostData = JsonUtility.FromJson<GhostData>(columns[2]);
+                }
+
+                return new SaveData(profileName, highScore)
+                {
+                    ghostData = ghostData
+                };
+            }
+        }
+
+        return null;
+    }
+
+    public void SaveGhost(string profileName, GhostData ghostData, int newHighScore)
+    {
+        if (!File.Exists(filePath))
+            return;
+
+        string[] lines = File.ReadAllLines(filePath);
+        bool updated = false;
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string[] columns = Regex.Split(
+                lines[i],
+                ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"
+            );
+
+            if (columns[0] == profileName)
+            {
+                string ghostJson = JsonUtility.ToJson(ghostData);
+                lines[i] = $"{profileName}, {newHighScore}, {ghostJson}";
+                updated = true;
                 break;
             }
         }
-        SaveData saveData = new SaveData(profileName, highScore);
-        saveDataList.Add(saveData);
-        return highScore;
+
+        if (updated)
+        {
+            File.WriteAllLines(filePath, lines);
+            Debug.Log("Ghost data saved");
+        }
     }
 }
 
@@ -67,10 +165,12 @@ public class SaveData
 {
     public string profileName;
     public int highScore;
+    public GhostData ghostData;
 
-    public SaveData(string profileName_, int highScore_)
+    public SaveData(string profileName_, int highScore_, GhostData ghostData_ = null)
     {
         profileName = profileName_;
         highScore = highScore_;
+        ghostData = ghostData_;
     }
 }

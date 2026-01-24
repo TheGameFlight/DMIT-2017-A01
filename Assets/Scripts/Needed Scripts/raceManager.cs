@@ -19,10 +19,19 @@ public class raceManager : MonoBehaviour
 
     private float raceTimer = 0f;
 
+    [SerializeField] private SaveSystem saveSystem;
+    [SerializeField] private string activeProfileName;
+
+    
+
     //delete after testing
-    [Header("Ghost Testing")]
     public Transform ghostSpawnPoint;
     //delete after testing
+
+    private void Start()
+    {
+        LoadGhostForActiveProfile();
+    }
 
     private void Awake()
     {
@@ -35,6 +44,25 @@ public class raceManager : MonoBehaviour
         {
             raceTimer += Time.deltaTime;
         }
+    }
+
+    public void SetActiveProfile(string profileName)
+    {
+        activeProfileName = profileName;
+    }
+
+    private void LoadGhostForActiveProfile()
+    {
+        if (saveSystem == null)
+            return;
+
+        SaveData data = saveSystem.LoadProfile(activeProfileName);
+
+        if (data != null && data.ghostData != null)
+        {
+            StartRaceWithGhost(data.ghostData);
+        }
+
     }
 
     public void StartRaceWithGhost(GhostData previousGhost)
@@ -69,6 +97,13 @@ public class raceManager : MonoBehaviour
             raceFinished = true;
             Debug.Log("RACE FINISHED");
             Debug.Log($"Race Finished! Time: {raceTimer}");
+
+            ghostRecorder.StopRecording();
+            saveSystem.SaveGhost(activeProfileName, ghostRecorder.ghostData, Mathf.RoundToInt(raceTimer));
+
+            //delete after testing
+            SpawnTestGhost();
+            //delete after testing
         }
         else
         {
@@ -94,16 +129,6 @@ public class raceManager : MonoBehaviour
 
     private bool AllCheckpointsPassed()
     {
-
-        //delete after testing
-        raceFinished = true;
-        Debug.Log("RACE FINISHED");
-        Debug.Log($"Final Time: {raceTimer:F2} seconds");
-
-        ghostRecorder.StopRecording();
-
-        SpawnTestGhost();
-        //delete after testing
 
         return nextCheckpointIndex >= checkpoints.Count;
 
