@@ -2659,7 +2659,7 @@ GameObject:
   - component: {fileID: 1063681511}
   - component: {fileID: 1063681510}
   m_Layer: 5
-  m_Name: Delete
+  m_Name: NO DONT DO IT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2731,7 +2731,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1569440848}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: CancelDelete
+        m_MethodName: ShowMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3624,7 +3624,7 @@ GameObject:
   - component: {fileID: 1457331354}
   - component: {fileID: 1457331353}
   m_Layer: 5
-  m_Name: Pick
+  m_Name: Delete this data
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4093,7 +4093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059afd36639d99d4dbb1354da275ffa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveSystem
-  filePath: Assets/Resources/saveData.csv
+  profilesCsvFileName: profiles.csv
   saveDataList: []
 --- !u!114 &1569440848
 MonoBehaviour:

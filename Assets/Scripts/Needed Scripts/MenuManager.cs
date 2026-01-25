@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Analytics.IAnalytic;
 
 public class MenuManager : MonoBehaviour
 {
@@ -20,7 +19,7 @@ public class MenuManager : MonoBehaviour
             SaveData data = saveSystem.LoadProfile(slotName);
             if (data == null)
             {
-                saveSystem.CreateSave(slotName, 0, null);
+                saveSystem.CreateSave(slotName, 0);
             }
         }
 
@@ -87,6 +86,7 @@ public class MenuManager : MonoBehaviour
         if (!string.IsNullOrEmpty(pendingDeleteProfile))
         {
             saveSystem.DeleteProfile(pendingDeleteProfile);
+            Debug.Log($"[DeleteProfile] Deleted profile {pendingDeleteProfile}");
         }
 
         pendingDeleteProfile = null;

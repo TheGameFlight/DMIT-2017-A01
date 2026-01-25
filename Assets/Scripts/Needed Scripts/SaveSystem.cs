@@ -6,56 +6,136 @@ using UnityEngine;
 
 public class SaveSystem : MonoBehaviour
 {
-
-    public string filePath;
+    public string profilesCsvFileName = "profiles.csv";
     public List<SaveData> saveDataList = new List<SaveData>();
 
-    //private void Awake()
-    //{
-    //    DontDestroyOnLoad(gameObject);
-    //}
+    private string ProfilesFolder => Path.Combine(Application.persistentDataPath, "Saves");
+    private string CsvPath => Path.Combine(ProfilesFolder, profilesCsvFileName);
 
-    public void CreateSave(string profileName_, int highScore_, GhostData ghostData_)
+    private void Awake()
     {
-        SaveData saveData = new SaveData(profileName_, highScore_, ghostData_);
-        bool fileExists = File.Exists(filePath);
+        if (!Directory.Exists(ProfilesFolder))
+            Directory.CreateDirectory(ProfilesFolder);
 
-        using (StreamWriter writer = new StreamWriter(filePath, true))
+        if (!File.Exists(CsvPath))
+            File.WriteAllText(CsvPath, "ProfileName,HighScore,GhostFile");
+    }
+
+    public void CreateSave(string profileName, int highScore)
+    {
+        string ghostFile = $"{profileName}_ghost.json";
+        string ghostPath = Path.Combine(ProfilesFolder, ghostFile);
+
+        SaveData saveData = new SaveData(profileName, highScore);
+        saveDataList.Add(saveData);
+
+        File.WriteAllText(ghostPath, JsonUtility.ToJson(new GhostData()));
+
+        using (StreamWriter writer = new StreamWriter(CsvPath, true))
         {
-            if (!fileExists)
-            {
-                writer.WriteLine("Profile Name, Score, GhostDataJson");
-            }
-
-            string ghostJson = JsonUtility.ToJson(ghostData_);
-            writer.WriteLine($"{saveData.profileName}, {saveData.highScore}, {ghostJson}");
-            saveDataList.Add(saveData);
+            writer.WriteLine($"{profileName},{highScore},{ghostFile}");
         }
+
+        Debug.Log($"[CreateSave] Created profile {profileName} with ghost file {ghostFile}");
     }
 
-    public void UpdateSave(SaveData saveData_)
+    public SaveData LoadProfile(string profileName)
     {
+        if (!File.Exists(CsvPath))
+        {
+            Debug.LogWarning($"[LoadProfile] CSV file does NOT exist: {CsvPath}");
+            return null;
+        }
 
+        string[] lines = File.ReadAllLines(CsvPath);
+        Debug.Log($"[LoadProfile] Total profiles in file: {lines.Length - 1}");
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string[] columns = lines[i].Split(',');
+
+            if (columns[0] == profileName)
+            {
+                int highScore = int.Parse(columns[1]);
+                GhostData ghostData = null;
+
+                if (columns.Length > 2)
+                {
+                    string ghostPath = Path.Combine(ProfilesFolder, columns[2]);
+                    if (File.Exists(ghostPath))
+                    {
+                        string json = File.ReadAllText(ghostPath);
+                        ghostData = JsonUtility.FromJson<GhostData>(json);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[LoadProfile] Ghost file not found: {ghostPath}");
+                    }
+                }
+
+                Debug.Log($"[LoadProfile] Loaded profile: {profileName}, HighScore: {highScore}, GhostFrames: {(ghostData != null ? ghostData.ghostDataFrames.Count : 0)}");
+                return new SaveData(profileName, highScore, ghostData);
+            }
+        }
+
+        Debug.LogWarning($"[LoadProfile] Profile {profileName} not found in CSV");
+        return null;
     }
 
-    public void DeleteSave(SaveData saveData_)
+    public void SaveGhost(string profileName, GhostData ghostData, int newHighScore)
     {
+        if (!File.Exists(CsvPath))
+        {
+            Debug.LogWarning($"[SaveGhost] CSV file does NOT exist: {CsvPath}");
+            return;
+        }
 
+        string[] lines = File.ReadAllLines(CsvPath);
+        bool updated = false;
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string[] columns = lines[i].Split(',');
+
+            if (columns[0] == profileName)
+            {
+                string ghostFile = $"{profileName}_ghost.json";
+                string ghostPath = Path.Combine(ProfilesFolder, ghostFile);
+
+                File.WriteAllText(ghostPath, JsonUtility.ToJson(ghostData));
+
+                lines[i] = $"{profileName},{newHighScore},{ghostFile}";
+                updated = true;
+                break;
+            }
+        }
+
+        if (updated)
+        {
+            File.WriteAllLines(CsvPath, lines);
+            Debug.Log($"[SaveGhost] Saved ghost for profile {profileName}, Frames: {ghostData.ghostDataFrames.Count}, Score: {newHighScore}");
+        }
+        else
+        {
+            Debug.LogWarning($"[SaveGhost] Profile {profileName} not found, cannot save ghost");
+        }
     }
 
     public void DeleteProfile(string profileName)
     {
-        if (!File.Exists(filePath))
+        if (!File.Exists(CsvPath))
         {
+            Debug.LogWarning($"[DeleteProfile] CSV file does NOT exist: {CsvPath}");
             return;
         }
 
-        List<string> lines = new List<string>(File.ReadAllLines(filePath));
+        List<string> lines = new List<string>(File.ReadAllLines(CsvPath));
+        string ghostFile = $"{profileName}_ghost.json";
+        string ghostPath = Path.Combine(ProfilesFolder, ghostFile);
 
         for (int i = lines.Count - 1; i >= 1; i--)
         {
-            string[] columns = Regex.Split(lines[i], ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
+            string[] columns = lines[i].Split(',');
             if (columns[0] == profileName)
             {
                 lines.RemoveAt(i);
@@ -63,85 +143,14 @@ public class SaveSystem : MonoBehaviour
             }
         }
 
-        File.WriteAllLines(filePath, lines);
-        Debug.Log("Profile deleted: " + profileName);
-    }
+        File.WriteAllLines(CsvPath, lines);
 
-
-    public SaveData LoadProfile(string profileName)
-    {
-        if (!File.Exists(filePath))
+        if (File.Exists(ghostPath))
         {
-            Debug.LogWarning($"[LoadProfile] Save file does NOT exist at path: {filePath}");
-            return null;
+            File.Delete(ghostPath);
         }
 
-        string[] lines = File.ReadAllLines(filePath);
-        Debug.Log($"[LoadProfile] Total lines in file: {lines.Length}");
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            string[] columns = Regex.Split(lines[i],",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
-            if (columns[0] == profileName)
-            {
-                int highScore = int.Parse(columns[1]);
-
-                GhostData ghostData = null;
-                if (columns.Length > 2 && !string.IsNullOrEmpty(columns[2]))
-                {
-                    ghostData = JsonUtility.FromJson<GhostData>(columns[2]);
-                }
-
-                Debug.Log($"[LoadProfile] Loaded profile: {profileName}, HighScore: {highScore}, Frames: {(ghostData != null ? ghostData.ghostDataFrames.Count : 0)}");
-
-                return new SaveData(profileName, highScore)
-                {
-                    ghostData = ghostData
-                };
-            }
-        }
-        Debug.LogWarning($"[LoadProfile] Profile {profileName} not found in file");
-        return null;
-    }
-
-    public void SaveGhost(string profileName, GhostData ghostData, int newHighScore)
-    {
-        if (!File.Exists(filePath))
-        {
-            Debug.LogWarning($"Save file does NOT exist at path: {filePath}");
-            return;
-        }
-
-        string[] lines = File.ReadAllLines(filePath);
-        bool updated = false;
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            string[] columns = Regex.Split(lines[i], ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
-            if (columns[0] == profileName)
-            {
-                string ghostJson = JsonUtility.ToJson(ghostData);
-                lines[i] = $"{profileName}, {newHighScore}, {ghostJson}";
-                updated = true;
-
-                Debug.Log($"[SaveGhost] Writing to file: {filePath}");
-                Debug.Log($"[SaveGhost] Profile: {profileName}, Time: {newHighScore}, Frames: {ghostData.ghostDataFrames.Count}");
-                break;
-            }
-        }
-
-        if (updated)
-        {
-            File.WriteAllLines(filePath, lines);
-            Debug.Log($"[SaveGhost] Data successfully saved for profile {profileName}");
-        }
-        else
-        {
-            Debug.LogWarning($"[SaveGhost] Profile {profileName} not found in file, cannot save ghost");
-        }
-        Debug.Log("you are in SaveGhost");
+        Debug.Log($"[DeleteProfile] Deleted profile {profileName} and ghost file {ghostFile}");
     }
 }
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using UnityEngine.SceneManagement;
 
 public class raceManager : MonoBehaviour
 {
@@ -30,16 +30,6 @@ public class raceManager : MonoBehaviour
     private void Start()
     {
         savePromptPanel.SetActive(false);
-        if (string.IsNullOrEmpty(ActiveProfile.profileName))
-        {
-            return;
-        }
-
-        SaveData data = saveSystem.LoadProfile(ActiveProfile.profileName);
-        if (data != null && data.ghostData != null)
-        {
-            StartRaceWithGhost(data.ghostData);
-        }
     }
 
     private void Update()
@@ -134,6 +124,26 @@ public class raceManager : MonoBehaviour
     public int GetFinalTime()
     {
         return Mathf.RoundToInt(raceTimer);
+    }
+
+    public void OnSaveYes()
+    {
+        if (string.IsNullOrEmpty(ActiveProfile.profileName))
+            return;
+
+        GhostData recordedGhost = ghostRecorder.ghostData;
+
+        saveSystem.SaveGhost(ActiveProfile.profileName, recordedGhost, Mathf.RoundToInt(raceTimer));
+
+        Debug.Log($"[SavePrompt] Ghost saved for profile {ActiveProfile.profileName} with time {raceTimer:F2}");
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void OnSaveNo()
+    {
+        Debug.Log($"[SavePrompt] Ghost NOT saved for profile {ActiveProfile.profileName}");
+        SceneManager.LoadScene("MainMenu");
     }
 
 }
