@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,23 +9,17 @@ public class MenuManager : MonoBehaviour
     public GameObject profileSelectPanel;
     public GameObject confirmDeletePanel;
 
+    public TMP_Dropdown profileDropdown;
+    public TMP_InputField renameInput;
+
     public SaveSystem saveSystem;
 
     private string pendingDeleteProfile;
 
     private void Start()
     {
-        for (int i = 1; i <= 5; i++)
-        {
-            string slotName = $"Profile {i}";
-            SaveData data = saveSystem.LoadProfile(slotName);
-            if (data == null)
-            {
-                saveSystem.CreateSave(slotName, 0);
-            }
-        }
-
         ShowMainMenu();
+        RefreshDropdown();
     }
 
 
@@ -39,6 +35,8 @@ public class MenuManager : MonoBehaviour
         mainMenuPanel.SetActive(false);
         profileSelectPanel.SetActive(true);
         confirmDeletePanel.SetActive(false);
+
+        RefreshDropdown();
     }
 
     public void StartButton()
@@ -51,33 +49,65 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
+    private string SelectedProfile
+    {
+        get
+        {
+            if (profileDropdown.options.Count == 0)
+            {
+                return null;
+            }
+            return profileDropdown.options[profileDropdown.value].text;
+        }
+    }
+
+    private void RefreshDropdown()
+    {
+        profileDropdown.ClearOptions();
+
+        List<string> options = new();
+        foreach (SaveData save in saveSystem.GetAllProfiles()) options.Add(save.profileName);
+
+        profileDropdown.AddOptions(options);
+
+        if (options.Count > 0)
+        {
+            profileDropdown.value = 0;
+
+        }
+    }
+
+    public void CreateNewSave()
+    {
+        string name = $"Save {saveSystem.GetAllProfiles().Count + 1}";
+        saveSystem.CreateSave(name, 0);
+        RefreshDropdown();
+
+        Debug.Log($"[Create] {name}");
+    }
+
     public void PickProfile(string profileName)
     {
-        ActiveProfile.profileName = profileName;
-
-        SaveData data = saveSystem.LoadProfile(profileName);
-
-        if (data == null)
+        if (string.IsNullOrEmpty(SelectedProfile))
         {
-            Debug.Log($"[PROFILE PICKED] {profileName} — NO SAVE DATA");
-        }
-        else if (data.ghostData == null || data.ghostData.ghostDataFrames.Count == 0)
-        {
-            Debug.Log($"[PROFILE PICKED] {profileName} — Best Time: {data.highScore} (NO GHOST)");
-        }
-        else
-        {
-            Debug.Log($"[PROFILE PICKED] {profileName} — Best Time: {data.highScore} (GHOST FOUND, Frames: {data.ghostData.ghostDataFrames.Count})");
+            return;
         }
 
-        profileSelectPanel.SetActive(false);
+        ActiveProfile.profileName = SelectedProfile;
+        Debug.Log($"[PROFILE PICKED] {SelectedProfile}");
 
         SceneManager.LoadScene("Game");
     }
 
     public void RequestDeleteProfile(string profileName)
     {
-        pendingDeleteProfile = profileName;
+        if (string.IsNullOrEmpty(SelectedProfile))
+        {
+            Debug.LogWarning("[DeleteProfile] No profile selected");
+            return;
+        }
+
+        pendingDeleteProfile = SelectedProfile;
         confirmDeletePanel.SetActive(true);
     }
 
@@ -91,5 +121,25 @@ public class MenuManager : MonoBehaviour
 
         pendingDeleteProfile = null;
         confirmDeletePanel.SetActive(false);
+        RefreshDropdown();
+    }
+
+    public void RenameSelected()
+    {
+        if (string.IsNullOrEmpty(SelectedProfile))
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(renameInput.text))
+        {
+            return;
+        }
+
+        saveSystem.RenameProfile(SelectedProfile, renameInput.text);
+        Debug.Log($"[Rename] {SelectedProfile} {renameInput.text}");
+
+        renameInput.text = string.Empty;
+        RefreshDropdown();
     }
 }

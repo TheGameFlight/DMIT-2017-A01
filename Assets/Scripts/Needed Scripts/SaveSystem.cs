@@ -39,6 +39,57 @@ public class SaveSystem : MonoBehaviour
         Debug.Log($"[CreateSave] Created profile {profileName} with ghost file {ghostFile}");
     }
 
+    public List<SaveData> GetAllProfiles()
+    {
+        List<SaveData> profiles = new();
+
+        if (!File.Exists(CsvPath))
+            return profiles;
+
+        string[] lines = File.ReadAllLines(CsvPath);
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string[] columns = lines[i].Split(',');
+            if (columns.Length < 2) continue;
+
+            profiles.Add(new SaveData(columns[0], int.Parse(columns[1])));
+        }
+
+        return profiles;
+    }
+
+    public void RenameProfile(string oldName, string newName)
+    {
+        if (!File.Exists(CsvPath))
+            return;
+
+        string[] lines = File.ReadAllLines(CsvPath);
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string[] columns = lines[i].Split(',');
+            if (columns[0] == oldName)
+            {
+                string oldGhost = columns[2];
+                string newGhost = $"{newName}_ghost.json";
+
+                string oldPath = Path.Combine(ProfilesFolder, oldGhost);
+                string newPath = Path.Combine(ProfilesFolder, newGhost);
+
+                if (File.Exists(oldPath))
+                    File.Move(oldPath, newPath);
+
+                lines[i] = $"{newName},{columns[1]},{newGhost}";
+                break;
+            }
+        }
+
+        File.WriteAllLines(CsvPath, lines);
+        Debug.Log($"[RenameProfile] {oldName} {newName}");
+    }
+
+
     public SaveData LoadProfile(string profileName)
     {
         if (!File.Exists(CsvPath))
