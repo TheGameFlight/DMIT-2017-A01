@@ -96,7 +96,7 @@ public class MenuManager : MonoBehaviour
         ActiveProfile.profileName = SelectedProfile;
         Debug.Log($"[PROFILE PICKED] {SelectedProfile}");
 
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("PickCar");
     }
 
     public void RequestDeleteProfile(string profileName)

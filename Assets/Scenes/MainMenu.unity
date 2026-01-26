@@ -4308,8 +4308,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059afd36639d99d4dbb1354da275ffa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveSystem
-  profilesCsvFileName: profiles.csv
-  saveDataList: []
 --- !u!114 &1569440848
 MonoBehaviour:
   m_ObjectHideFlags: 0
