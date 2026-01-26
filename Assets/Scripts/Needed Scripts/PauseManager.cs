@@ -28,7 +28,6 @@ public class PauseManager : MonoBehaviour
     private void Start()
     {
         PausePanel.SetActive(false);
-        Time.timeScale = 1f;
         isPaused = false;
     }
 
