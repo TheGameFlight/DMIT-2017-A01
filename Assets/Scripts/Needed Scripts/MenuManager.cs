@@ -109,6 +109,7 @@ public class MenuManager : MonoBehaviour
 
         pendingDeleteProfile = SelectedProfile;
         confirmDeletePanel.SetActive(true);
+        profileSelectPanel.SetActive(false);
     }
 
     public void ConfirmDelete()
@@ -121,6 +122,7 @@ public class MenuManager : MonoBehaviour
 
         pendingDeleteProfile = null;
         confirmDeletePanel.SetActive(false);
+        profileSelectPanel.SetActive(true);
         RefreshDropdown();
     }
 
