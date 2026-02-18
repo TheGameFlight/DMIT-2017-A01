@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +10,10 @@ public class GhostData
     // index
     // position - posX, posY, posZ
     // rotation  - rotX, rotY, rotZ
-    public void AddFrame(Vector3 position_, Vector3 rotation_)
+    public GhostDataRecorder ghostRecorder;
+    public void AddFrame(Vector3 position_, Vector3 rotation_, float time_)
     {
-        ghostDataFrames.Add(new GhostDataFrame(position_, rotation_));
+        ghostDataFrames.Add(new GhostDataFrame(position_, rotation_, time_));
     }
 }
 
@@ -22,10 +22,12 @@ public class GhostDataFrame
 {
     public Vector3 position;
     public Vector3 rotation;
+    public float time;
 
-    public GhostDataFrame(Vector3 position_, Vector3 rotation_)
+    public GhostDataFrame(Vector3 position_, Vector3 rotation_, float time_)
     {
         position = position_;
         rotation = rotation_;
+        time = time_;
     }
 }
